@@ -11,19 +11,21 @@ class TabModel extends ChangeNotifier {
 
   int get currentIndex => _currentIndex;
 
-  void setIndex(int idx) {
-    if (idx == _currentIndex) return;
-    _currentIndex = idx;
+  void select(int index) {
+    if (index == _currentIndex) return;
+    _currentIndex = index;
     notifyListeners();
   }
 }
 
-void main() => runApp(
-  ChangeNotifierProvider(
-    create: (_) => TabModel(),
-    child: const MaterialApp(home: BottomNavLab()),
-  ),
-);
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => TabModel(),
+      child: const MaterialApp(home: BottomNavLab()),
+    ),
+  );
+}
 
 class BottomNavLab extends StatelessWidget {
   const BottomNavLab({super.key});
@@ -37,7 +39,7 @@ class BottomNavLab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = context.watch<TabModel>().currentIndex;
+    final int currentIndex = context.watch<TabModel>().currentIndex;
 
     return Scaffold(
       appBar: AppBar(
@@ -52,9 +54,7 @@ class BottomNavLab extends StatelessWidget {
         backgroundColor: Colors.blue,
         iconSize: 30,
         currentIndex: currentIndex,
-        onTap: (int index) {
-          context.read<TabModel>().setIndex(index);
-        },
+        onTap: (int index) => context.read<TabModel>().select(index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.alarm), label: 'Alarm'),
